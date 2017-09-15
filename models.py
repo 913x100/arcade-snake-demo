@@ -1,3 +1,5 @@
+import arcade.key
+
 DIR_UP = 1
 DIR_RIGHT = 2
 DIR_DOWN = 3
@@ -39,7 +41,16 @@ class World:
         self.height = height
  
         self.snake = Snake(self, width // 2, height // 2)
- 
+
+    def on_key_press(self, key, key_modifiers):
+        if key == arcade.key.UP:
+            self.snake.direction = DIR_UP
+        if key == arcade.key.DOWN:
+            self.snake.direction = DIR_DOWN
+        if key == arcade.key.RIGHT:
+            self.snake.direction = DIR_RIGHT
+        if key == arcade.key.LEFT:
+            self.snake.direction = DIR_LEFT
  
     def update(self, delta):
         self.snake.update(delta)
