@@ -1,4 +1,5 @@
 import arcade.key
+from random import randint
 
 DIR_UP = 1
 DIR_RIGHT = 2

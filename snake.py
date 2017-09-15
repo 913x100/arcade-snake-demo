@@ -1,5 +1,7 @@
 import arcade
 import arcade.key
+
+from random import randint
 from models import Snake, World
  
 SCREEN_WIDTH = 600
@@ -28,6 +30,8 @@ class SnakeWindow(arcade.Window):
         self.world = World(SCREEN_WIDTH, SCREEN_HEIGHT)
  
         self.snake_sprite = SnakeSprite(self.world.snake)
+        self.heart_sprite = ModelSprite('images/heart.png',
+                                        model=self.world.heart)
 
 
     def on_key_press(self, key, key_modifiers):
@@ -41,6 +45,7 @@ class SnakeWindow(arcade.Window):
         arcade.start_render()
  
         self.snake_sprite.draw()
+        self.heart_sprite.draw()
 
 class SnakeSprite:
     def __init__(self, snake):
