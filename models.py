@@ -24,7 +24,12 @@ class Snake:
         self.length = 3
         self.wait_time = 0
         self.direction = DIR_RIGHT
- 
+        self.has_eaten = False
+
+    def can_eat(self, heart):
+        if self.body[0][0] == heart.x and self.body[0][1] == heart.y:
+            return True
+
     def update(self, delta):
         self.wait_time += delta
  
@@ -36,11 +41,13 @@ class Snake:
  
         self.wait_time = 0
         self.body = [(self.x, self.y)] + self.body
-        self.body.pop()
+        if self.has_eaten == True:
+            self.length = self.length+1
+            self.has_eaten = False
+        else:
+            self.body.pop()
     
-    def can_eat(self, heart):
-        if self.body[0][0] == heart.x and self.body[0][1] == heart.y:
-            return True
+
  
 class World:
     def __init__(self, width, height):
@@ -65,6 +72,7 @@ class World:
         self.snake.update(delta)
         if self.snake.can_eat(self.heart):
             self.heart.random_position()
+            self.snake.has_eaten = True
 
 class Heart:
     def __init__(self, world):
