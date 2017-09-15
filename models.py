@@ -37,6 +37,10 @@ class Snake:
         self.wait_time = 0
         self.body = [(self.x, self.y)] + self.body
         self.body.pop()
+    
+    def can_eat(self, heart):
+        if self.body[0][0] == heart.x and self.body[0][1] == heart.y:
+            return True
  
 class World:
     def __init__(self, width, height):
@@ -59,6 +63,8 @@ class World:
  
     def update(self, delta):
         self.snake.update(delta)
+        if self.snake.can_eat(self.heart):
+            self.heart.random_position()
 
 class Heart:
     def __init__(self, world):
