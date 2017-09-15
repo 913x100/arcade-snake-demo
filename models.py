@@ -17,23 +17,25 @@ class Snake:
         self.world = world
         self.x = x
         self.y = y
+        self.body = [(x,y),
+                (x-Snake.BLOCK_SIZE, y),
+                (x-2*Snake.BLOCK_SIZE, y)]
+        self.length = 3
         self.wait_time = 0
         self.direction = DIR_RIGHT
  
     def update(self, delta):
         self.wait_time += delta
-
+ 
         if self.wait_time < Snake.MOVE_WAIT:
             return
-
-        if self.x > self.world.width:
-            self.x = 0
-        if self.y > self.world.height:
-            self.y = 0
-
-        self.x += DIR_OFFSET[self.direction][0]*Snake.BLOCK_SIZE
-        self.y += DIR_OFFSET[self.direction][1]*Snake.BLOCK_SIZE
+ 
+        self.x += Snake.BLOCK_SIZE * DIR_OFFSET[self.direction][0]
+        self.y += Snake.BLOCK_SIZE * DIR_OFFSET[self.direction][1]
+ 
         self.wait_time = 0
+        self.body = [(self.x, self.y)] + self.body
+        self.body.pop()
  
 class World:
     def __init__(self, width, height):
@@ -41,6 +43,8 @@ class World:
         self.height = height
  
         self.snake = Snake(self, width // 2, height // 2)
+        self.heart = Heart(self)
+        self.heart.random_position()
 
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.UP:
@@ -54,3 +58,16 @@ class World:
  
     def update(self, delta):
         self.snake.update(delta)
+
+class Heart:
+    def __init__(self, world):
+        self.world = world
+        self.x = 0
+        self.y = 0
+ 
+    def random_position(self):
+        centerx = self.world.width // 2
+        centery = self.world.height // 2
+ 
+        self.x = centerx + randint(-15,15) * Snake.BLOCK_SIZE
+        self.y = centerx + randint(-15,15) * Snake.BLOCK_SIZE
